@@ -35,7 +35,7 @@ function createTabClient<IAPI extends object>(
 
 ### createBackgroundBatchClient
 ```ts
-function createBatchClient<DataType>(
+function createBackgroundBatchClient<DataType>(
   options?: {
     expectedVersion?: string
     channel?: string
