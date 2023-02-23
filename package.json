@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "cross-env": "^7.0.3",
-    "delight-rpc": "^5.0.4",
+    "delight-rpc": "^5.1.0",
     "eslint": "8.29.0",
     "extra-filesystem": "^0.4.8",
     "husky": "4",
@@ -61,6 +61,6 @@
     "webextension-polyfill": "^0.10.0"
   },
   "peerDependencies": {
-    "delight-rpc": "^5.0.4"
+    "delight-rpc": "^5.1.0"
   }
 }

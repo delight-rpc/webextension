@@ -2074,10 +2074,10 @@ delayed-stream@~1.0.0:
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==
 
-delight-rpc@^5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/delight-rpc/-/delight-rpc-5.0.4.tgz#a5f30f86ded0fab4e99223eecb00ad0b3506f9e0"
-  integrity sha512-sxc4/3MmdnCd3UmpfNXLAMjWJHcQOhbcc9KB6lA1cw3nh5/r/3AVy1kSM6OWmFR0q0+aUBaBWRtx2hvsl57caw==
+delight-rpc@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/delight-rpc/-/delight-rpc-5.1.0.tgz#90585eaabc0ac38e945c3faefcc5f4660f60c0e0"
+  integrity sha512-fmz/11mi4G16PyiBnQ8nGNk5xAK6LzmmaySYZF0CC7h8mWgEt9h54NaopnItxVwLkHrl3YvM3pRs5B/nt5EhOg==
   dependencies:
     "@blackglory/errors" "^2.4.3"
     "@blackglory/prelude" "^0.2.4"
