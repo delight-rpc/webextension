@@ -2,7 +2,8 @@ const { pathsToModuleNameMapper } = require('ts-jest')
 const { compilerOptions } = require('./tsconfig.base.json')
 
 module.exports = {
-  preset: 'ts-jest'
+  preset: 'ts-jest/presets/default-esm'
+, resolver: '@blackglory/jest-resolver'
 , testEnvironment: 'jsdom'
 , testEnvironmentOptions: {
     // 覆盖jsdom环境下的默认选项, 避免在导入时使用browser字段
