@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/delight-rpc/webextension/compare/v0.2.0...v0.2.1) (2023-06-11)
+
+
+### Bug Fixes
+
+* export src ([441cdf1](https://github.com/delight-rpc/webextension/commit/441cdf1ad7048cd33222ca8373ae36aa93d9d66e))
+
 ## [0.2.0](https://github.com/delight-rpc/webextension/compare/v0.1.1...v0.2.0) (2023-03-19)
 
 
