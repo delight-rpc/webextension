@@ -1,5 +1,5 @@
 import * as DelightRPC from 'delight-rpc'
-import { go, isntNull } from '@blackglory/prelude'
+import { assert, go, isntNull } from '@blackglory/prelude'
 
 export function createServer<IAPI extends object>(
   api: DelightRPC.ImplementationOf<IAPI>
@@ -36,10 +36,9 @@ export function createServer<IAPI extends object>(
               , ownPropsOnly
               }
             )
+            assert(isntNull(res))
 
-            if (isntNull(res)) {
-              sendResponse(res)
-            }
+            sendResponse(res)
           })
 
           return true
