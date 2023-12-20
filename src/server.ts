@@ -1,4 +1,3 @@
-import browser from 'webextension-polyfill'
 import * as DelightRPC from 'delight-rpc'
 import { go, isntNull } from '@blackglory/prelude'
 
@@ -11,21 +10,22 @@ export function createServer<IAPI extends object>(
     ownPropsOnly?: boolean
   } = {}
 ): () => void {
-  const port = browser.runtime
+  const port = chrome.runtime
 
   port.onMessage.addListener(handler)
   return () => port.onMessage.removeListener(handler)
 
   function handler(
     message: unknown
-  , sender: browser.Runtime.MessageSender
-  ): void | Promise<unknown> {
-    if (sender.id === browser.runtime.id) {
+  , sender: chrome.runtime.MessageSender
+  , sendResponse: (response?: unknown) => void
+  ): void | true {
+    if (sender.id === chrome.runtime.id) {
       const req = message
 
       if (DelightRPC.isRequest(req) || DelightRPC.isBatchRequest(req)) {
         if (DelightRPC.matchChannel(req, channel)) {
-          return go(async () => {
+          go(async () => {
             const res = await DelightRPC.createResponse(
               api
             , req
@@ -38,9 +38,11 @@ export function createServer<IAPI extends object>(
             )
 
             if (isntNull(res)) {
-              return res
+              sendResponse(res)
             }
           })
+
+          return true
         }
       }
     }

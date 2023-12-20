@@ -38,8 +38,8 @@
     "@blackglory/types": "^1.4.0",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
+    "@types/chrome": "^0.0.254",
     "@types/jest": "^29.5.0",
-    "@types/webextension-polyfill": "^0.10.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "cross-env": "^7.0.3",
@@ -61,8 +61,7 @@
   },
   "dependencies": {
     "@blackglory/prelude": "^0.3.1",
-    "@delight-rpc/protocol": "^4.0.0",
-    "webextension-polyfill": "^0.10.0"
+    "@delight-rpc/protocol": "^4.0.0"
   },
   "peerDependencies": {
     "delight-rpc": "^5.1.0 || ^6.0.0"

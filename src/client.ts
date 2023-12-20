@@ -1,4 +1,3 @@
-import browser from 'webextension-polyfill'
 import * as DelightRPC from 'delight-rpc'
 import { IBatchRequest, IRequest } from '@delight-rpc/protocol'
 
@@ -9,7 +8,7 @@ export function createBackgroundClient<IAPI extends object>(
     channel?: string
   } = {}
 ): DelightRPC.ClientProxy<IAPI> {
-  const port = browser.runtime
+  const port = chrome.runtime
 
   const client = DelightRPC.createClient<IAPI>(
     async function send(request: IRequest<unknown>) {
@@ -36,7 +35,7 @@ export function createTabClient<IAPI extends object>(
     channel?: string
   } = {}
 ): DelightRPC.ClientProxy<IAPI> {
-  const port = browser.tabs
+  const port = chrome.tabs
 
   const client = DelightRPC.createClient<IAPI>(
     async function send(request: IRequest<unknown>) {
@@ -62,7 +61,7 @@ export function createBackgroundBatchClient<DataType>(
     channel?: string
   } = {}
 ): DelightRPC.BatchClient<DataType> {
-  const port = browser.runtime
+  const port = chrome.runtime
 
   const client = new DelightRPC.BatchClient<DataType>(
     async function send(request: IBatchRequest<unknown>) {
@@ -87,7 +86,7 @@ export function createTabBatchClient<DataType>(
     channel?: string
   } = {}
 ): DelightRPC.BatchClient<DataType> {
-  const port = browser.tabs
+  const port = chrome.tabs
 
   const client = new DelightRPC.BatchClient<DataType>(
     async function send(request: IBatchRequest<unknown>) {
