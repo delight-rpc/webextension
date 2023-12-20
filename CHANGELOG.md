@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/delight-rpc/webextension/compare/v0.2.1...v0.3.0) (2023-12-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js v16 => Node.js v18.17.0
+
+* upgrade dependencies ([dffdb75](https://github.com/delight-rpc/webextension/commit/dffdb75d2a8019ec54bb88d1914b948a3879cf6a))
+
 ### [0.2.1](https://github.com/delight-rpc/webextension/compare/v0.2.0...v0.2.1) (2023-06-11)
 
 
