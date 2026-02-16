@@ -36,6 +36,8 @@ export function createServer<IAPI extends object>(
               , ownPropsOnly
               }
             )
+            // `createResponse()`只在channel不匹配时返回null,
+            // 为了能够同步返回true, 已经通过`matchChannel()`保证channel匹配, 故该断言必然成立.
             assert(isntNull(res))
 
             sendResponse(res)
