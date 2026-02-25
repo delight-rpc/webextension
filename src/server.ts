@@ -1,6 +1,7 @@
 import * as DelightRPC from 'delight-rpc'
 import { assert, go, isntNull } from '@blackglory/prelude'
 import { HashMap } from '@blackglory/structures'
+import { SyncDestructor } from 'extra-defer'
 
 export function createServer<IAPI extends object>(
   api: DelightRPC.ImplementationOf<IAPI>
@@ -11,7 +12,8 @@ export function createServer<IAPI extends object>(
     ownPropsOnly?: boolean
   } = {}
 ): () => void {
-  const port = chrome.runtime
+  const destructor = new SyncDestructor()
+
   const channelIdToController: HashMap<
     {
       channel?: string
@@ -19,14 +21,19 @@ export function createServer<IAPI extends object>(
     }
   , AbortController
   > = new HashMap(({ channel, id }) => JSON.stringify([channel, id]))
+  destructor.defer(abortAllPendings)
 
-  port.onMessage.addListener(handleMessage)
+  const port = chrome.runtime
   port.onSuspend.addListener(abortAllPendings)
-  return () => {
-    port.onMessage.removeListener(handleMessage)
-    port.onSuspend.removeListener(abortAllPendings)
-    abortAllPendings()
-  }
+  destructor.defer(() => port.onSuspend.removeListener(abortAllPendings))
+
+  port.onMessage.addListener(receive)
+  destructor.defer(() => port.onMessage.removeListener(receive))
+
+  port.onSuspend.addListener(abortAllPendings)
+  destructor.defer(() => port.onSuspend.removeListener(abortAllPendings))
+
+  return () => destructor.execute()
 
   function abortAllPendings(): void {
     for (const controller of channelIdToController.values()) {
@@ -36,7 +43,7 @@ export function createServer<IAPI extends object>(
     channelIdToController.clear()
   }
 
-  function handleMessage(
+  function receive(
     message: unknown
   , sender: chrome.runtime.MessageSender
   , sendResponse: (response?: unknown) => void
@@ -45,10 +52,13 @@ export function createServer<IAPI extends object>(
       if (DelightRPC.isRequest(message) || DelightRPC.isBatchRequest(message)) {
         if (DelightRPC.matchChannel(message, channel)) {
           go(async () => {
-            const controller = new AbortController()
-            channelIdToController.set(message, controller)
+            const destructor = new SyncDestructor()
 
             try {
+              const controller = new AbortController()
+              channelIdToController.set(message, controller)
+              destructor.defer(() => channelIdToController.delete(message))
+
               const res = await DelightRPC.createResponse(
                 api
               , message
@@ -66,7 +76,7 @@ export function createServer<IAPI extends object>(
 
               sendResponse(res)
             } finally {
-              channelIdToController.delete(message)
+              destructor.execute()
             }
           })
 

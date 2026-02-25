@@ -16,7 +16,7 @@ function createBackgroundClient<IAPI extends object>(
     channel?: string
     timeout?: number
   }
-): DelightRPC.ClientProxy<IAPI>
+): [client: DelightRPC.ClientProxy<IAPI>, close: () => void]
 ```
 
 ### createTabClient
@@ -32,7 +32,7 @@ function createTabClient<IAPI extends object>(
     channel?: string
     timeout?: number
   }
-): DelightRPC.ClientProxy<IAPI>
+): [client: DelightRPC.ClientProxy<IAPI>, close: () => void]
 ```
 
 ### createBackgroundBatchClient
@@ -43,7 +43,7 @@ function createBackgroundBatchClient<DataType>(
     channel?: string
     timeout?: number
   }
-): DelightRPC.BatchClient<DataType>
+): [client: DelightRPC.BatchClient<DataType>, close: () => void]
 ```
 
 ### createTabBatchClient
@@ -58,7 +58,7 @@ function createTabBatchClient<DataType>(
     channel?: string
     timeout?: number
   }
-): DelightRPC.BatchClient<DataType>
+): [client: DelightRPC.BatchClient<DataType>, close: () => void]
 ```
 
 ### createServer
