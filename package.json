@@ -65,6 +65,6 @@
     "extra-abort": "^0.4.1"
   },
   "peerDependencies": {
-    "delight-rpc": "^5.1.0 || ^6.0.0"
+    "delight-rpc": "^5.1.0 || ^6.0.0 || ^7.0.0"
   }
 }
