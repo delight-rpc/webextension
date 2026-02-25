@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/delight-rpc/webextension/compare/v0.3.0...v0.3.1) (2026-02-25)
+
+
+### Features
+
+* add support for `DelightRPC.Abort` ([f773752](https://github.com/delight-rpc/webextension/commit/f773752f7273f1bbabfa0fb38afcc22f61ea599b))
+* add support for delight-rpc@^7.0.0 ([b794115](https://github.com/delight-rpc/webextension/commit/b7941157ba5000bbbcca9bee799fd7cff4717e7e))
+
 ## [0.3.0](https://github.com/delight-rpc/webextension/compare/v0.2.1...v0.3.0) (2023-12-20)
 
 
