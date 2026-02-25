@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/delight-rpc/webextension/compare/v0.3.1...v0.4.0) (2026-02-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* - Modified the return value of `createBackgroundClient()`.
+- Modified the return value of `createBackgroundBatchClient()`.
+- Modified the return value of `createTabClient()`.
+- Modified the return value of `createTabBatchClient()`.
+
+### Features
+
+* add destructors ([b186e17](https://github.com/delight-rpc/webextension/commit/b186e17007759561d2206441c01c89ad1dbf7d24))
+
 ### [0.3.1](https://github.com/delight-rpc/webextension/compare/v0.3.0...v0.3.1) (2026-02-25)
 
 
