@@ -60,7 +60,9 @@
   },
   "dependencies": {
     "@blackglory/prelude": "^0.3.4",
-    "@delight-rpc/protocol": "^4.1.1"
+    "@blackglory/structures": "^0.14.13",
+    "@delight-rpc/protocol": "^4.1.1",
+    "extra-abort": "^0.4.1"
   },
   "peerDependencies": {
     "delight-rpc": "^5.1.0 || ^6.0.0"

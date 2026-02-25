@@ -14,6 +14,7 @@ function createBackgroundClient<IAPI extends object>(
     parameterValidators?: DelightRPC.ParameterValidators<IAPI>
     expectedVersion?: string
     channel?: string
+    timeout?: number
   }
 ): DelightRPC.ClientProxy<IAPI>
 ```
@@ -29,6 +30,7 @@ function createTabClient<IAPI extends object>(
     parameterValidators?: DelightRPC.ParameterValidators<IAPI>
     expectedVersion?: string
     channel?: string
+    timeout?: number
   }
 ): DelightRPC.ClientProxy<IAPI>
 ```
@@ -39,6 +41,7 @@ function createBackgroundBatchClient<DataType>(
   options?: {
     expectedVersion?: string
     channel?: string
+    timeout?: number
   }
 ): DelightRPC.BatchClient<DataType>
 ```
@@ -53,6 +56,7 @@ function createTabBatchClient<DataType>(
 , options?: {
     expectedVersion?: string
     channel?: string
+    timeout?: number
   }
 ): DelightRPC.BatchClient<DataType>
 ```

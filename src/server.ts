@@ -1,5 +1,6 @@
 import * as DelightRPC from 'delight-rpc'
 import { assert, go, isntNull } from '@blackglory/prelude'
+import { HashMap } from '@blackglory/structures'
 
 export function createServer<IAPI extends object>(
   api: DelightRPC.ImplementationOf<IAPI>
@@ -11,39 +12,70 @@ export function createServer<IAPI extends object>(
   } = {}
 ): () => void {
   const port = chrome.runtime
+  const channelIdToController: HashMap<
+    {
+      channel?: string
+    , id: string
+    }
+  , AbortController
+  > = new HashMap(({ channel, id }) => JSON.stringify([channel, id]))
 
-  port.onMessage.addListener(handler)
-  return () => port.onMessage.removeListener(handler)
+  port.onMessage.addListener(handleMessage)
+  port.onSuspend.addListener(abortAllPendings)
+  return () => {
+    port.onMessage.removeListener(handleMessage)
+    port.onSuspend.removeListener(abortAllPendings)
+    abortAllPendings()
+  }
 
-  function handler(
+  function abortAllPendings(): void {
+    for (const controller of channelIdToController.values()) {
+      controller.abort()
+    }
+
+    channelIdToController.clear()
+  }
+
+  function handleMessage(
     message: unknown
   , sender: chrome.runtime.MessageSender
   , sendResponse: (response?: unknown) => void
   ): void | true {
     if (sender.id === chrome.runtime.id) {
-      const req = message
-
-      if (DelightRPC.isRequest(req) || DelightRPC.isBatchRequest(req)) {
-        if (DelightRPC.matchChannel(req, channel)) {
+      if (DelightRPC.isRequest(message) || DelightRPC.isBatchRequest(message)) {
+        if (DelightRPC.matchChannel(message, channel)) {
           go(async () => {
-            const res = await DelightRPC.createResponse(
-              api
-            , req
-            , {
-                parameterValidators
-              , version
-              , channel
-              , ownPropsOnly
-              }
-            )
-            // `createResponse()`只在channel不匹配时返回null,
-            // 为了能够同步返回true, 已经通过`matchChannel()`保证channel匹配, 故该断言必然成立.
-            assert(isntNull(res))
+            const controller = new AbortController()
+            channelIdToController.set(message, controller)
 
-            sendResponse(res)
+            try {
+              const res = await DelightRPC.createResponse(
+                api
+              , message
+              , {
+                  parameterValidators
+                , version
+                , channel
+                , ownPropsOnly
+                , signal: controller.signal
+                }
+              )
+              // `createResponse()`只在channel不匹配时返回null,
+              // 为了能够同步返回true, 已经通过`matchChannel()`保证channel匹配, 故该断言必然成立.
+              assert(isntNull(res))
+
+              sendResponse(res)
+            } finally {
+              channelIdToController.delete(message)
+            }
           })
 
           return true
+        }
+      } else if (DelightRPC.isAbort(message)) {
+        if (DelightRPC.matchChannel(message, channel)) {
+          channelIdToController.get(message)?.abort()
+          channelIdToController.delete(message)
         }
       }
     }
