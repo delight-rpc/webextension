@@ -50,7 +50,11 @@ export function createBackgroundClient<IAPI extends object>(
     }
   )
 
-  return [client, () => destructor.execute()]
+  return [client, close]
+
+  function close(): void {
+    destructor.execute()
+  }
 
   function abortAllPendings(): void {
     controller.abort()
@@ -80,21 +84,30 @@ export function createTabClient<IAPI extends object>(
 
   const client = DelightRPC.createClient<IAPI>(
     async function send(request, signal) {
-      const mergedSignal = raceAbortSignals([
-        isntUndefined(timeout) && timeoutSignal(timeout)
-      , signal
-      , controller.signal
-      ])
-      mergedSignal.addEventListener('abort', async () => {
+      const destructor = new SyncDestructor()
+
+      try {
+        const mergedSignal = raceAbortSignals([
+          isntUndefined(timeout) && timeoutSignal(timeout)
+        , signal
+        , controller.signal
+        ])
+        mergedSignal.addEventListener('abort', sendAbort)
+        destructor.defer(() => mergedSignal.removeEventListener('abort', sendAbort))
+
+        return await withAbortSignal(mergedSignal, () => port.sendMessage(
+          target.tabId
+        , request
+        , { frameId: target.frameId }
+        ))
+      } finally {
+        destructor.execute()
+      }
+
+      async function sendAbort(): Promise<void> {
         const abort = DelightRPC.createAbort(request.id, channel)
         await port.sendMessage(target.tabId, abort, { frameId: target.frameId })
-      })
-
-      return await withAbortSignal(mergedSignal, () => port.sendMessage(
-        target.tabId
-      , request
-      , { frameId: target.frameId }
-      ))
+      }
     }
   , {
       parameterValidators
