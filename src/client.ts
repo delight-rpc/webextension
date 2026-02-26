@@ -14,7 +14,7 @@ export function createBackgroundClient<IAPI extends object>(
   const destructor = new SyncDestructor()
 
   const controller = new AbortController()
-  destructor.defer(() => controller.abort())
+  destructor.defer(abortAllPendings)
 
   const port = chrome.runtime
   port.onSuspend.addListener(abortAllPendings)
@@ -76,7 +76,7 @@ export function createTabClient<IAPI extends object>(
   const destructor = new SyncDestructor()
 
   const controller = new AbortController()
-  destructor.defer(() => controller.abort())
+  destructor.defer(abortAllPendings)
 
   const port = chrome.tabs
   port.onRemoved.addListener(onTabRemoved)
@@ -122,6 +122,10 @@ export function createTabClient<IAPI extends object>(
     destructor.execute()
   }
 
+  function abortAllPendings(): void {
+    controller.abort()
+  }
+
   function onTabRemoved(tabId: number): void {
     if (tabId === target.tabId) {
       close()
@@ -139,7 +143,7 @@ export function createBackgroundBatchClient<DataType>(
   const destructor = new SyncDestructor()
 
   const controller = new AbortController()
-  destructor.defer(() => controller.abort())
+  destructor.defer(abortAllPendings)
 
   const port = chrome.runtime
   port.onSuspend.addListener(abortAllPendings)
@@ -173,7 +177,11 @@ export function createBackgroundBatchClient<DataType>(
     }
   )
 
-  return [client, () => destructor.execute()]
+  return [client, close]
+
+  function close(): void {
+    destructor.execute()
+  }
 
   function abortAllPendings(): void {
     controller.abort()
@@ -194,7 +202,7 @@ export function createTabBatchClient<DataType>(
   const destructor = new SyncDestructor()
 
   const controller = new AbortController()
-  destructor.defer(() => controller.abort())
+  destructor.defer(abortAllPendings)
 
   const port = chrome.tabs
   port.onRemoved.addListener(onTabRemoved)
@@ -236,6 +244,10 @@ export function createTabBatchClient<DataType>(
 
   function close(): void {
     destructor.execute()
+  }
+
+  function abortAllPendings(): void {
+    controller.abort()
   }
 
   function onTabRemoved(tabId: number): void {

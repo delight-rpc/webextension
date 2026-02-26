@@ -30,7 +30,11 @@ export function createServer<IAPI extends object>(
   port.onMessage.addListener(receive)
   destructor.defer(() => port.onMessage.removeListener(receive))
 
-  return () => destructor.execute()
+  return close
+
+  function close(): void {
+    destructor.execute()
+  }
 
   function abortAllPendings(): void {
     for (const controller of channelIdToController.values()) {
