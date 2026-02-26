@@ -30,9 +30,6 @@ export function createServer<IAPI extends object>(
   port.onMessage.addListener(receive)
   destructor.defer(() => port.onMessage.removeListener(receive))
 
-  port.onSuspend.addListener(abortAllPendings)
-  destructor.defer(() => port.onSuspend.removeListener(abortAllPendings))
-
   return () => destructor.execute()
 
   function abortAllPendings(): void {
