@@ -24,8 +24,12 @@ export function createServer<IAPI extends object>(
   destructor.defer(abortAllPendings)
 
   const port = chrome.runtime
-  port.onSuspend.addListener(abortAllPendings)
-  destructor.defer(() => port.onSuspend.removeListener(abortAllPendings))
+  // `@types/chrome`提供的类型有误,
+  // `chrome.runtime.onSuspend`在content script等运行环境中不存在.
+  if (port.onSuspend) {
+    port.onSuspend.addListener(abortAllPendings)
+    destructor.defer(() => port.onSuspend.removeListener(abortAllPendings))
+  }
 
   port.onMessage.addListener(receive)
   destructor.defer(() => port.onMessage.removeListener(receive))
