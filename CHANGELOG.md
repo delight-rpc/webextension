@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.3](https://github.com/delight-rpc/webextension/compare/v0.4.2...v0.4.3) (2026-11-23)
+
+
+### Bug Fixes
+
+* **server:** check if `chrome.runtime.onSuspend` exists ([d2341ed](https://github.com/delight-rpc/webextension/commit/d2341ed77b8e4e01b2ce0fec794d2112ab110625))
+
 ### [0.4.2](https://github.com/delight-rpc/webextension/compare/v0.4.1...v0.4.2) (2026-02-26)
 
 ### [0.4.1](https://github.com/delight-rpc/webextension/compare/v0.4.0...v0.4.1) (2026-02-26)
