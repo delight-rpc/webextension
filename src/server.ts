@@ -24,6 +24,7 @@ export function createServer<IAPI extends object>(
   destructor.defer(abortAllPendings)
 
   const port = chrome.runtime
+
   // `@types/chrome`提供的类型有误,
   // `chrome.runtime.onSuspend`在content script等运行环境中不存在.
   if (port.onSuspend) {
